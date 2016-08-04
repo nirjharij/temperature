@@ -2,7 +2,7 @@
 =============
 Demonstration of a web service client and server.
 
-The client directory contains a single python file that communicates with a [Flask](http://flask.pocoo.org/) based web service running on the localhost, port 5000.
+The client directory contains a single python file that communicates with a [Flask](http://flask.pocoo.org/) (or other) based web service running on the localhost, port 5000.
 
 The web service exposes the following endpoints:
 
