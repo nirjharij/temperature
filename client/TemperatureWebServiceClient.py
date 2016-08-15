@@ -12,6 +12,7 @@ from contextlib import closing
 from httplib import CannotSendRequest, HTTPConnection
 from _socket import error
 from urllib import quote
+from urllib2 import URLError
 
 def getConnection():
     '''
@@ -38,8 +39,8 @@ def webserviceResult(conn, wsEndpoint, temperature):
             data = resp.read()
             return data
         else:
-            raise Exception('Invocation of web service failed')
-    except (error, CannotSendRequest, Exception) as wsError:
+            raise URLError('Invocation of web service failed')
+    except (error, CannotSendRequest, URLError) as wsError:
         raise wsError
 
 def endpoint(temperatureScale):
@@ -58,7 +59,7 @@ def endpoint(temperatureScale):
         return '/convert/rankine/'
     elif temperatureScale.upper()[0] == 'C':
         return '/convert/celsius/'
-    raise Exception('Unknown conversion scale')
+    raise URLError('Unknown conversion scale')
 
 def displayTemps(temperatureScale, jsonString):
     '''
@@ -90,10 +91,13 @@ def readDataFile():
     Generator that returns a tuple with the temperature scale as the first element
     and the tempearture as the second element
     '''
-    with open('testfile.csv') as fPtr:
-        reader = csv.reader(fPtr)
-        for line in reader:
-            yield line
+    try:
+        with open('testfile.csv') as fPtr:
+            reader = csv.reader(fPtr)
+            for line in reader:
+                yield line
+    except IOError, ioError:
+        raise ioError
 
 def main():
     '''
@@ -101,15 +105,18 @@ def main():
     the specified temperature and scale to the other three temperature scales.
     '''
     print 'Input\t\tFahrenheit\tKelvin\t\tCelsius\t\tRankine\r\n',
-    for scale, degrees in readDataFile():
-        with closing(getConnection()) as connection:
-            try:
-                print "%-12s %s" % (degrees, displayTemps(scale,
+    try:
+        for scale, degrees in readDataFile():
+            with closing(getConnection()) as connection:
+                try:
+                    print "%-12s %s" % (degrees, displayTemps(scale,
                                             webserviceResult(connection,
                                                             endpoint(scale),
                                                             degrees)))
-            except Exception:
-                print degrees, '\t\tX\t\tX\t\tX\t\tX'
+                except URLError:
+                    print degrees, '\t\tX\t\tX\t\tX\t\tX'
+    except IOError:
+        print 'Missing or corrupt test data file'
 
 if __name__ == '__main__':
     main()
