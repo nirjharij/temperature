@@ -74,11 +74,11 @@ def displayTemps(temperatureScale, jsonString):
     '''
     temps = json.loads(jsonString)
     if temperatureScale.upper()[0] == 'K':
-        return '%.2f\t\t-\t\t%.2f\t\t%.2f' % (temps['fahrenheit'], temps['rankine'],
-                                            temps['celsius'])
+        return '%.2f\t\t-\t\t%.2f\t\t%.2f' % (temps['fahrenheit'], temps['celsius'], 
+                                                  temps['rankine'],)
     elif temperatureScale.upper()[0] == 'F':
-        return '\t-\t\t%.2f\t\t%.2f\t\t%.2f' % (temps['kelvin'], temps['rankine'],
-                                                  temps['celsius'])
+        return '\t-\t\t%.2f\t\t%.2f\t\t%.2f' % (temps['kelvin'], temps['celsius'],
+                                                  temps['rankine'])
     elif temperatureScale.upper()[0] == 'R':
         return '%.2f\t\t%.2f\t\t%.2f\t\t-' % (temps['fahrenheit'], temps['kelvin'],
                                                   temps['celsius'])
