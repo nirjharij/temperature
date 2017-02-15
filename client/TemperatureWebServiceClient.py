@@ -92,7 +92,7 @@ def readDataFile():
     and the tempearture as the second element
     '''
     try:
-        with open('testfile.csv') as fPtr:
+        with open('/home/artzen/Documents/temperature/client/testfile.csv') as fPtr:
             reader = csv.reader(fPtr)
             for line in reader:
                 yield line
@@ -107,6 +107,7 @@ def main():
     print 'Input\t\tFahrenheit\tKelvin\t\tCelsius\t\tRankine\r\n',
     try:
         for scale, degrees in readDataFile():
+            print "s,d",scale,degrees
             with closing(getConnection()) as connection:
                 try:
                     print "%-12s %s" % (degrees, displayTemps(scale,
@@ -118,5 +119,5 @@ def main():
     except IOError:
         print 'Missing or corrupt test data file'
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     main()
