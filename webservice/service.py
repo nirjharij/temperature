@@ -48,10 +48,10 @@ class ConvertCelsiusHandler(BaseHandler):
 
 def make_app():
     return tornado.web.Application([
-        (r"/convert/kelvin/(\d+)/",       ConvertKelvinHandler),
-        (r"/convert/fahrenheit/(\d+)/",   ConvertFahrenheitHandler),
-        (r"/convert/rankine/(\d+)/",      ConvertRankineHandler),
-        (r"/convert/celsius/(\d+)/",      ConvertCelsiusHandler)
+        (r"/convert/kelvin/(-?\d+\.\d+)/",       ConvertKelvinHandler),
+        (r"/convert/fahrenheit/(-?\d+\.\d+)/",   ConvertFahrenheitHandler),
+        (r"/convert/rankine/(-?\d+\.\d+)/",      ConvertRankineHandler),
+        (r"/convert/celsius/(-?\d+\.\d+)/",      ConvertCelsiusHandler)
     ])
 
 if __name__ == '__main__':
